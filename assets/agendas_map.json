@@ -1,0 +1,142 @@
+[
+  {
+    "id": "econ_gran_capital",
+    "name": "Gran Capital",
+    "icon": "econ_gran_capital.png"
+  },
+  {
+    "id": "econ_campo",
+    "name": "Campo",
+    "icon": "econ_campo.png"
+  },
+  {
+    "id": "econ_industria",
+    "name": "Industria",
+    "icon": "econ_industria.png"
+  },
+  {
+    "id": "econ_pymes",
+    "name": "PyMEs",
+    "icon": "econ_pymes.png"
+  },
+  {
+    "id": "econ_extractivismo",
+    "name": "Extractivismo",
+    "icon": "econ_extractivismo.png"
+  },
+  {
+    "id": "econ_financiero",
+    "name": "Financiero",
+    "icon": "econ_financiero.png"
+  },
+  {
+    "id": "econ_sendero",
+    "name": "Sendero",
+    "icon": "econ_sendero.png"
+  },
+  {
+    "id": "soc_obrero",
+    "name": "Obrero",
+    "icon": "soc_obrero.png"
+  },
+  {
+    "id": "soc_mov_sociales",
+    "name": "Movimientos Sociales",
+    "icon": "soc_mov_sociales.png"
+  },
+  {
+    "id": "soc_jubilados",
+    "name": "Jubilados",
+    "icon": "soc_jubilados.png"
+  },
+  {
+    "id": "soc_clase_media",
+    "name": "Clase Media",
+    "icon": "soc_clase_media.png"
+  },
+  {
+    "id": "soc_educacion",
+    "name": "Educación",
+    "icon": "soc_educacion.png"
+  },
+  {
+    "id": "soc_salud",
+    "name": "Salud",
+    "icon": "soc_salud.png"
+  },
+  {
+    "id": "soc_mano_dura",
+    "name": "Mano Dura",
+    "icon": "soc_mano_dura.png"
+  },
+  {
+    "id": "cul_lgbtiq",
+    "name": "LGBTIQ+",
+    "icon": "cul_lgbtiq.png"
+  },
+  {
+    "id": "cul_mujeres",
+    "name": "Mujeres",
+    "icon": "cul_mujeres.png"
+  },
+  {
+    "id": "cul_valores_trad",
+    "name": "Valores Tradicionales",
+    "icon": "cul_valores_trad.png"
+  },
+  {
+    "id": "cul_ddhh",
+    "name": "Derechos Humanos",
+    "icon": "cul_ddhh.png"
+  },
+  {
+    "id": "cul_negacionismo",
+    "name": "Negacionismo",
+    "icon": "cul_negacionismo.png"
+  },
+  {
+    "id": "cul_pueblos_originarios",
+    "name": "Pueblos Originarios",
+    "icon": "cul_pueblos_originarios.png"
+  },
+  {
+    "id": "cul_medioambiente",
+    "name": "Medio Ambiente",
+    "icon": "cul_medioambiente.png"
+  },
+  {
+    "id": "dip_china",
+    "name": "China",
+    "icon": "dip_china.png"
+  },
+  {
+    "id": "dip_usa",
+    "name": "EEUU",
+    "icon": "dip_usa.png"
+  },
+  {
+    "id": "dip_israel",
+    "name": "Israel",
+    "icon": "dip_israel.png"
+  },
+  {
+    "id": "dip_palestina",
+    "name": "Palestina",
+    "icon": "dip_palestina.png"
+  },
+  {
+    "id": "dip_patria_grande",
+    "name": "Patria Grande",
+    "icon": "dip_patria_grande.png"
+  },
+  {
+    "id": "dip_rev_socialista",
+    "name": "Revolución Socialista",
+    "icon": "dip_rev_socialista.png"
+  },
+  {
+    "id": "dip_malvinas",
+    "name": "Malvinas",
+    "icon": "dip_malvinas.png"
+  }
+]

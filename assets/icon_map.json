@@ -1,0 +1,1074 @@
+[
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_eeuu",
+	"name": "Estados Unidos",
+	"points": 100,
+	"icon": "d_1.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_china",
+	"name": "China",
+	"points": 100,
+	"icon": "d_2.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_brasil",
+	"name": "Brasil",
+	"points": 50,
+	"icon": "d_3.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_rusia",
+	"name": "Rusia",
+	"points": 25,
+	"icon": "d_4.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_israel",
+	"name": "Israel",
+	"points": 25,
+	"icon": "d_7.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_reino_unido",
+	"name": "Reino Unido",
+	"points": 10,
+	"icon": "d_5.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_venezuela",
+	"name": "Venezuela",
+	"points": 5,
+	"icon": "d_6.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_iran",
+	"name": "Irán",
+	"points": 5,
+	"icon": "d_8.png"
+  },
+  {
+	"region": "internacional",
+	"category": "diplomacia",
+	"id": "dip_palestina",
+	"name": "Palestina",
+	"points": 5,
+	"icon": "d_9.png"
+  },
+  {
+	"region": "nacional",
+	"category": "pueblos",
+	"id": "pue_movimiento_indigenista",
+	"name": "Movimiento indigenista",
+	"points": 10,
+	"icon": "d_10.png"
+  },
+  {
+	"region": "nacional",
+	"category": "pueblos",
+	"id": "pue_pueblo_mapuche",
+	"name": "Pueblo Mapuche",
+	"points": 5,
+	"icon": "d_11.png"
+  },
+  {
+	"region": "nacional",
+	"category": "pueblos",
+	"id": "pue_pueblo_qom",
+	"name": "Pueblo Qom",
+	"points": 5,
+	"icon": "d_12.png"
+  },
+  {
+	"region": "nacional",
+	"category": "pueblos",
+	"id": "pue_pueblo_wichi",
+	"name": "Pueblo Wichí",
+	"points": 5,
+	"icon": "d_13.png"
+  },
+  {
+	"region": "nacional",
+	"category": "pueblos",
+	"id": "pue_pueblo_diaguita",
+	"name": "Pueblo Diaguita",
+	"points": 5,
+	"icon": "d_14.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_gran_capital",
+	"name": "Gran capital",
+	"points": 100,
+	"icon": "n_1.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_industria",
+	"name": "Industria",
+	"points": 50,
+	"icon": "n_3.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_campo",
+	"name": "Campo",
+	"points": 50,
+	"icon": "n_2.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_pymes",
+	"name": "PyMEs",
+	"points": 75,
+	"icon": "n_4.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_sector_financiero",
+	"name": "Sector financiero",
+	"points": 25,
+	"icon": "n_6.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_sector_extractivista",
+	"name": "Sector extractivista",
+	"points": 25,
+	"icon": "n_5.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_movimiento_obrero",
+	"name": "Movimiento obrero",
+	"points": 50,
+	"icon": "n_7.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 25,
+	"icon": "n_14.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 25,
+	"icon": "n_9.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_movimiento_mujeres",
+	"name": "Movimiento de mujeres",
+	"points": 25,
+	"icon": "n_11.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_movimiento_jubilados",
+	"name": "Movimiento de jubilados",
+	"points": 25,
+	"icon": "n_20.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_comunidad_cientifica",
+	"name": "Comunidad científica",
+	"points": 10,
+	"icon": "n_21.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_movimiento_lgbtiq",
+	"name": "Movimiento LGBTIQ+",
+	"points": 25,
+	"icon": "n_10.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_iglesia",
+	"name": "Iglesia",
+	"points": 25,
+	"icon": "n_8.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_gremios_docentes",
+	"name": "Gremios docentes",
+	"points": 25,
+	"icon": "n_12.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_gremios_salud",
+	"name": "Gremios de la salud",
+	"points": 25,
+	"icon": "n_13.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_grandes_medios",
+	"name": "Grandes medios",
+	"points": 50,
+	"icon": "n_23.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_organismos_ddhh",
+	"name": "Organismos de DDHH",
+	"points": 10,
+	"icon": "n_16.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_policia_federal",
+	"name": "Policía federal",
+	"points": 10,
+	"icon": "n_15.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_veteranos_malvinas",
+	"name": "Veteranos de Malvinas",
+	"points": 10,
+	"icon": "n_22.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_grupos_negacionistas",
+	"name": "Grupos negacionistas",
+	"points": 10,
+	"icon": "n_17.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_clase_media",
+	"name": "Clase media",
+	"points": 50,
+	"icon": "n_18.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_grupos_ambientalistas",
+	"name": "Grupos ambientalistas",
+	"points": 10,
+	"icon": "n_24.png"
+  },
+  {
+	"region": "nacional",
+	"category": "nacional",
+	"id": "nac_justicia",
+	"name": "Justicia",
+	"points": 10,
+	"icon": "n_19.png"
+  },
+  {
+	"id": "dis_caba_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_5.png"
+  },
+  {
+	"id": "dis_caba_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_7.png"
+  },
+  {
+	"id": "dis_caba_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_2.png"
+  },
+  {
+	"id": "dis_caba_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_8.png"
+  },
+  {
+	"id": "dis_caba_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_4.png"
+  },
+  {
+	"id": "dis_caba_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_6.png"
+  },
+  {
+	"id": "dis_caba_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_3.png"
+  },
+  {
+	"id": "dis_caba_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_1.png"
+  },
+  {
+	"id": "dis_pba_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_5.png"
+  },
+  {
+	"id": "dis_pba_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_7.png"
+  },
+  {
+	"id": "dis_pba_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_2.png"
+  },
+  {
+	"id": "dis_pba_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_8.png"
+  },
+  {
+	"id": "dis_pba_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_4.png"
+  },
+  {
+	"id": "dis_pba_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_6.png"
+  },
+  {
+	"id": "dis_pba_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_3.png"
+  },
+  {
+	"id": "dis_pba_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_1.png"
+  },
+  {
+	"id": "dis_santa_fe_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_5.png"
+  },
+  {
+	"id": "dis_santa_fe_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_7.png"
+  },
+  {
+	"id": "dis_santa_fe_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_2.png"
+  },
+  {
+	"id": "dis_santa_fe_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_8.png"
+  },
+  {
+	"id": "dis_santa_fe_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_4.png"
+  },
+  {
+	"id": "dis_santa_fe_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_6.png"
+  },
+  {
+	"id": "dis_santa_fe_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_3.png"
+  },
+  {
+	"id": "dis_santa_fe_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_1.png"
+  },
+  {
+	"id": "dis_cordoba_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_5.png"
+  },
+  {
+	"id": "dis_cordoba_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_7.png"
+  },
+  {
+	"id": "dis_cordoba_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_2.png"
+  },
+  {
+	"id": "dis_cordoba_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_8.png"
+  },
+  {
+	"id": "dis_cordoba_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_4.png"
+  },
+  {
+	"id": "dis_cordoba_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_6.png"
+  },
+  {
+	"id": "dis_cordoba_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_3.png"
+  },
+  {
+	"id": "dis_cordoba_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_1.png"
+  },
+  {
+	"id": "dis_patagonia_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_5.png"
+  },
+  {
+	"id": "dis_patagonia_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_7.png"
+  },
+  {
+	"id": "dis_patagonia_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_2.png"
+  },
+  {
+	"id": "dis_patagonia_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_8.png"
+  },
+  {
+	"id": "dis_patagonia_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_4.png"
+  },
+  {
+	"id": "dis_patagonia_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_6.png"
+  },
+  {
+	"id": "dis_patagonia_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_3.png"
+  },
+  {
+	"id": "dis_patagonia_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_1.png"
+  },
+  {
+	"id": "dis_cuyo_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_5.png"
+  },
+  {
+	"id": "dis_cuyo_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_7.png"
+  },
+  {
+	"id": "dis_cuyo_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_2.png"
+  },
+  {
+	"id": "dis_cuyo_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_8.png"
+  },
+  {
+	"id": "dis_cuyo_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_4.png"
+  },
+  {
+	"id": "dis_cuyo_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_6.png"
+  },
+  {
+	"id": "dis_cuyo_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_3.png"
+  },
+  {
+	"id": "dis_cuyo_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_1.png"
+  },
+  {
+	"id": "dis_mesopotamia_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_5.png"
+  },
+  {
+	"id": "dis_mesopotamia_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_7.png"
+  },
+  {
+	"id": "dis_mesopotamia_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_2.png"
+  },
+  {
+	"id": "dis_mesopotamia_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_8.png"
+  },
+  {
+	"id": "dis_mesopotamia_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_4.png"
+  },
+  {
+	"id": "dis_mesopotamia_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_6.png"
+  },
+  {
+	"id": "dis_mesopotamia_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_3.png"
+  },
+  {
+	"id": "dis_mesopotamia_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_1.png"
+  },
+  {
+	"id": "dis_norte_gremio_docente",
+	"name": "Gremio docente",
+	"points": 5,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_5.png"
+  },
+  {
+	"id": "dis_norte_gremio_salud",
+	"name": "Gremio de la salud",
+	"points": 5,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_7.png"
+  },
+  {
+	"id": "dis_norte_medios_locales",
+	"name": "Medios locales",
+	"points": 5,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_2.png"
+  },
+  {
+	"id": "dis_norte_empresas_locales",
+	"name": "Empresas locales",
+	"points": 25,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_8.png"
+  },
+  {
+	"id": "dis_norte_sindicatos_locales",
+	"name": "Sindicatos locales",
+	"points": 10,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_4.png"
+  },
+  {
+	"id": "dis_norte_movimiento_estudiantil",
+	"name": "Movimiento estudiantil",
+	"points": 5,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_6.png"
+  },
+  {
+	"id": "dis_norte_movimientos_sociales",
+	"name": "Movimientos sociales",
+	"points": 5,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_3.png"
+  },
+  {
+	"id": "dis_norte_policia_local",
+	"name": "Policía local",
+	"points": 5,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_1.png"
+  },
+  {
+	"id": "dis_caba_laboratorios_farmaceuticos",
+	"name": "Laboratorios farmacéuticos",
+	"points": 25,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_9.png"
+  },
+  {
+	"id": "dis_caba_camaras_inmobiliarias",
+	"name": "Cámaras inmobiliarias",
+	"points": 25,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_11.png"
+  },
+  {
+	"id": "dis_caba_trabajadores_cultura",
+	"name": "Trabajadores de la cultura",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_12.png"
+  },
+  {
+	"id": "dis_caba_metrodelegados",
+	"name": "Metrodelegados",
+	"points": 5,
+	"region": "caba",
+	"category": "distrital",
+	"icon": "c_10.png"
+  },
+  {
+	"id": "dis_pba_camara_automotriz",
+	"name": "Cámara automotriz",
+	"points": 25,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_12.png"
+  },
+  {
+	"id": "dis_pba_camara_pesquera",
+	"name": "Cámara pesquera",
+	"points": 10,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_11.png"
+  },
+  {
+	"id": "dis_pba_sector_metalurgico",
+	"name": "Sector metalúrgico",
+	"points": 10,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_10.png"
+  },
+  {
+	"id": "dis_pba_frigorificos",
+	"name": "Frigoríficos",
+	"points": 25,
+	"region": "pba",
+	"category": "distrital",
+	"icon": "b_9.png"
+  },
+  {
+	"id": "dis_santafe_tamberos",
+	"name": "Tamberos",
+	"points": 10,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_9.png"
+  },
+  {
+	"id": "dis_santafe_camaras_aceiteras",
+	"name": "Cámaras aceiteras",
+	"points": 10,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_12.png"
+  },
+  {
+	"id": "dis_santafe_narcotrafico",
+	"name": "Narcotráfico",
+	"points": 50,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_11.png"
+  },
+  {
+	"id": "dis_santafe_obreros_portuarios",
+	"name": "Obreros portuarios",
+	"points": 5,
+	"region": "santa_fe",
+	"category": "distrital",
+	"icon": "s_10.png"
+  },
+  {
+	"id": "dis_cordoba_productores_mani",
+	"name": "Productores de maní",
+	"points": 10,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_10.png"
+  },
+  {
+	"id": "dis_cordoba_camara_automotriz",
+	"name": "Cámara automotriz",
+	"points": 10,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_12.png"
+  },
+  {
+	"id": "dis_cordoba_startups_tecnologicas",
+	"name": "Startups tecnológicas",
+	"points": 10,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_9.png"
+  },
+  {
+	"id": "dis_cordoba_tamberos",
+	"name": "Tamberos",
+	"points": 10,
+	"region": "cordoba",
+	"category": "distrital",
+	"icon": "o_11.png"
+  },
+  {
+	"id": "dis_norte_mineras",
+	"name": "Mineras",
+	"points": 10,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_11.png"
+  },
+  {
+	"id": "dis_norte_ingenios_azucareros",
+	"name": "Ingenios azucareros",
+	"points": 25,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_9.png"
+  },
+  {
+	"id": "dis_norte_productores_limoneros",
+	"name": "Productores limoneros",
+	"points": 10,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_10.png"
+  },
+  {
+	"id": "dis_norte_camara_litio",
+	"name": "Cámara del Litio",
+	"points": 25,
+	"region": "norte",
+	"category": "distrital",
+	"icon": "g_12.png"
+  },
+  {
+	"id": "dis_cuyo_bodegas_vitivinicolas",
+	"name": "Bodegas vitivinícolas",
+	"points": 25,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_9.png"
+  },
+  {
+	"id": "dis_cuyo_sector_olivicola",
+	"name": "Sector olivícola",
+	"points": 10,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_10.png"
+  },
+  {
+	"id": "dis_cuyo_mineras",
+	"name": "Mineras",
+	"points": 10,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_11.png"
+  },
+  {
+	"id": "dis_cuyo_petroleras",
+	"name": "Petroleras",
+	"points": 10,
+	"region": "cuyo",
+	"category": "distrital",
+	"icon": "u_12.png"
+  },
+  {
+	"id": "dis_patagonia_productores_fruticolas",
+	"name": "Productores frutícolas",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_9.png"
+  },
+  {
+	"id": "dis_patagonia_mineras",
+	"name": "Mineras",
+	"points": 10,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_12.png"
+  },
+  {
+	"id": "dis_patagonia_petroleras",
+	"name": "Petroleras",
+	"points": 50,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_11.png"
+  },
+  {
+	"id": "dis_patagonia_polo_fueguino",
+	"name": "Polo fueguino",
+	"points": 5,
+	"region": "patagonia",
+	"category": "distrital",
+	"icon": "e_10.png"
+  },
+  {
+	"id": "dis_mesopotamia_camara_yerbera",
+	"name": "Cámara yerbatera",
+	"points": 10,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_9.png"
+  },
+  {
+	"id": "dis_mesopotamia_tareferos",
+	"name": "Tareferos",
+	"points": 5,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_10.png"
+  },
+  {
+	"id": "dis_mesopotamia_industria_avicola",
+	"name": "Industria avícola",
+	"points": 10,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_11.png"
+  },
+  {
+	"id": "dis_mesopotamia_industria_forestal",
+	"name": "Industria forestal",
+	"points": 10,
+	"region": "mesopotamia",
+	"category": "distrital",
+	"icon": "m_12.png"
+  }
+]
