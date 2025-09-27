@@ -142,3 +142,157 @@ ul.list li .actions{display:flex;gap:6px}
 .agenda-box .chip{
   padding-left: 6px !important;
 }
+
+/* ===== MOBILE ===== */
+/* Tablet y móviles: apila columnas, ensancha inputs y reduce paddings */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  #list-root,
+  #form-root {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card {
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  header .actions { justify-content: flex-end; }
+
+  button {
+    padding: 10px 12px;
+    font-size: 1rem;
+    width: auto;
+  }
+
+  .toolbar { font-size: 1.1rem; }
+
+  /* Lista: más aire y altura auto para evitar cortes */
+  ul.list {
+    max-height: none;
+    gap: 10px;
+  }
+  ul.list li {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  /* Formulario: columnas a una sola columna */
+  .form .row {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .form .col { min-width: 100%; }
+  .form label { font-size: .95rem; }
+  .form input[type="text"],
+  .form input[type="number"],
+  .form select,
+  .form textarea {
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+  .form textarea { min-height: 120px; }
+  .form .option { padding: 10px; }
+
+  .small { font-size: .95rem; }
+
+  /* Chips y contenedores */
+  .chips { gap: 8px; }
+  .chip { padding: 4px 6px; }
+  .chip img { width: 22px; height: 22px; }
+
+  /* Modal: más ancho, ocupa alto y elimina márgenes internos grandes */
+  .modal-backdrop { padding: 12px; }
+  .modal {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 12px;
+  }
+  .modal-head,
+  .modal-toolbar,
+  .modal-foot { padding: 10px 12px; }
+
+  /* Buscadores */
+  .modal-toolbar .search,
+  .sector-search {
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+
+  /* Grids: más columnas flexibles y tarjetas más compactas */
+  .icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+  .icon-item {
+    padding: 10px;
+    gap: 8px;
+  }
+  .icon-item .thumb { width: 34px; height: 34px; }
+  .icon-item .label { font-size: .95rem; }
+
+  .sector-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    max-height: 60vh;
+  }
+  .sector-item {
+    padding: 10px;
+    gap: 6px;
+  }
+  .sector-item img { width: 50px; height: 50px; }
+  .sector-item__label { font-size: .95rem; }
+  .sector-item__check { top: 6px; right: 8px; }
+
+  /* Agenda picker horizontal en móviles */
+  .agenda-box {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* Móviles pequeños: prioriza legibilidad y toques más grandes */
+@media (max-width: 480px) {
+  body { padding: 10px; gap: 10px; }
+
+  header { gap: 8px; }
+  button { width: 100%; }
+
+  .icon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .icon-item .thumb { width: 32px; height: 32px; }
+  .icon-item .label { font-size: .9rem; }
+
+  .sector-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .sector-item img { width: 46px; height: 46px; }
+  .sector-item__label { font-size: .9rem; }
+
+  .modal {
+    width: 100%;
+    height: 96vh;
+    max-height: none;
+    border-radius: 10px;
+  }
+  .modal-foot .right { width: 100%; }
+  .modal-foot .right > * { flex: 1; }
+}
