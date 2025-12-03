@@ -10,11 +10,13 @@ import {
   ensureOptionIds,
   parseCSVInts,
   slugify,
-  EFFECT_TARGET
+  THIRD_SELECTOR_KINDS,
+  readThirdSelectorFrom
 } from "../lib/schema.js";
 import { validateQuestion } from "../lib/validate.js";
 import { openSectorPicker } from "../lib/sector-picker.js";
 import { openAgendaPicker } from "../lib/agenda-picker.js";
+import { openForcePicker } from "../ui/force-picker.js";
 
 let _iconMapCache = null;
 let _agendaMapCache = null;
@@ -69,15 +71,68 @@ function agendaIconPathFor(id) {
   return "";
 }
 
-function getEffectValue(effects, type, key = "value", def = 0, target = EFFECT_TARGET.SELF) {
-  const e = Array.isArray(effects) ? effects.find(x => x && x.type === type && (x.target ?? EFFECT_TARGET.SELF) === target) : null;
+// Íconos de fuerzas
+const FORCE_SLUGS = ["peronismo","republicanismo","trotskismo","libertarismo","progresismo","nacionalismo"];
+function forceIconPathFor(index) {
+  const i = Number(index);
+  if (!Number.isInteger(i) || i < 0 || i >= FORCE_SLUGS.length) return "";
+  return `assets/forces/${FORCE_SLUGS[i]}.png`;
+}
+
+function getEffectValueSelf(effects, type, key = "value", def = 0) {
+  const e = Array.isArray(effects) ? effects.find(x => x && x.type === type) : null;
   if (!e) return def;
   return Number.isFinite(e[key]) ? e[key] : def;
 }
 
-function getEffectIds(effects, type, target = EFFECT_TARGET.SELF) {
-  const e = Array.isArray(effects) ? effects.find(x => x && x.type === type && (x.target ?? EFFECT_TARGET.SELF) === target) : null;
-  return Array.isArray(e?.ids) ? [...e.ids] : [];
+function findThirdSelectorInEffects(effects) {
+  if (!Array.isArray(effects)) return null;
+  for (const e of effects) {
+    if (!e || typeof e !== "object") continue;
+    if (e.type === "affect_force_stats" || e.type === "force_support_loss") {
+      const sel = readThirdSelectorFrom(e);
+      if (sel) return sel;
+    }
+  }
+  return null;
+}
+
+function getThirdDeltasFromEffects(effects) {
+  if (!Array.isArray(effects)) return { dimg: 0, dnuc: 0 };
+  const e = effects.find(x => x && x.type === "affect_force_stats");
+  if (!e) return { dimg: 0, dnuc: 0 };
+  const dimg = Number.isInteger(Number(e.imagen_delta)) ? Number(e.imagen_delta) : 0;
+  const dnuc = Number.isInteger(Number(e.nucleo_delta)) ? Number(e.nucleo_delta) : 0;
+  return { dimg, dnuc };
+}
+
+function getThirdLostSupportsFromEffects(effects) {
+  if (!Array.isArray(effects)) return [];
+  const ids = [];
+  effects.forEach(e => {
+    if (e && e.type === "force_support_loss" && typeof e.support_id === "string" && e.support_id.trim()) {
+      ids.push(e.support_id.trim());
+    }
+  });
+  return ids;
+}
+
+// Normaliza el valor según el tipo elegido
+function normalizeThirdSelOnKind(sel) {
+  const kind = sel?.kind;
+  if (kind === THIRD_SELECTOR_KINDS.OFFICIALISM) {
+    return { kind, value: true };
+  }
+  if (kind === THIRD_SELECTOR_KINDS.FORCE) {
+    return { kind, value: Number.isInteger(sel?.value) ? sel.value : null };
+  }
+  if (kind === THIRD_SELECTOR_KINDS.AGENDA) {
+    return { kind, value: typeof sel?.value === "string" ? sel.value : "" };
+  }
+  if (kind === THIRD_SELECTOR_KINDS.SECTOR_SUPPORT) {
+    return { kind, value: typeof sel?.value === "string" ? sel.value : "" };
+  }
+  return { kind: THIRD_SELECTOR_KINDS.OFFICIALISM, value: true };
 }
 
 export function mountForm(container, { onChange } = {}) {
@@ -227,27 +282,12 @@ export function mountForm(container, { onChange } = {}) {
       <label>Siguiente pregunta (id)</label>
       <input type="text" data-field="nextq"/>
 
-      <div class="row" data-role-ui="selector-target" style="margin-top:6px">
+      <div class="row" data-role-ui="self-metrics">
         <div class="col">
-          <label class="small">A quién afectan los efectos</label>
-          <div class="target-radios" data-field="target-radios">
-            <label class="pill"><input type="radio" name="tgt-${uid}-${oid}" value="${EFFECT_TARGET.OFFICIALISM}"> Oficialismo</label>
-            <label class="pill"><input type="radio" name="tgt-${uid}-${oid}" value="${EFFECT_TARGET.BY_SECTOR}"> Fuerza con apoyo sectorial</label>
-            <label class="pill"><input type="radio" name="tgt-${uid}-${oid}" value="${EFFECT_TARGET.BY_AGENDA}"> Fuerza con agenda</label>
-          </div>
-        </div>
-        <div class="col" style="display:flex;align-items:end;gap:8px">
-          <button class="btn" data-act="pick-target" disabled>Seleccionar</button>
-          <div class="chips" data-field="target-chip"></div>
-        </div>
-      </div>
-
-      <div class="row" data-role-ui="metrics">
-        <div class="col" data-role-ui="self-deltas">
           <label>Δ Imagen pública (%)</label>
           <input type="number" data-field="dimg" value="0"/>
         </div>
-        <div class="col" data-role-ui="self-deltas">
+        <div class="col">
           <label>Δ Núcleo duro (K)</label>
           <input type="number" data-field="dnuc" step="100" value="0"/>
         </div>
@@ -258,36 +298,56 @@ export function mountForm(container, { onChange } = {}) {
             <input type="number" data-field="p_capital" placeholder="capital" value="0" style="flex:1"/>
           </div>
         </div>
-        <div class="col" data-role-ui="rival-deltas">
-          <label>Δ Imagen pública (%) del rival</label>
-          <input type="number" data-field="r_dimg" value="0"/>
-        </div>
-        <div class="col" data-role-ui="rival-deltas">
-          <label>Δ Núcleo duro (K) del rival</label>
-          <input type="number" data-field="r_dnuc" step="100" value="0"/>
-        </div>
       </div>
 
       <div class="row" style="align-items:center">
         <div class="col">
-          <div class="small muted" style="margin-top:0.5rem;">+ Apoyos</div>
+          <div class="small muted" style="margin-top:0.5rem;">+ Apoyos propios</div>
           <div class="chips" data-field="chips-add"></div>
           <button class="btn" data-act="pick-add">Seleccionar</button>
         </div>
         <div class="col">
-          <div class="small muted" style="margin-top:0.5rem;">− Apoyos</div>
+          <div class="small muted" style="margin-top:0.5rem;">− Apoyos propios</div>
           <div class="chips" data-field="chips-rem"></div>
           <button class="btn" data-act="pick-rem">Seleccionar</button>
         </div>
-        <div class="col" data-role-ui="rival-supports">
-          <div class="small muted" style="margin-top:0.5rem;">+ Apoyos del rival</div>
-          <div class="chips" data-field="chips-add-rival"></div>
-          <button class="btn" data-act="pick-add-rival">Seleccionar</button>
+      </div>
+
+      <div class="card" style="margin-top:10px" data-role-ui="third-wrapper">
+        <div class="row" style="align-items:center">
+          <div class="col" style="display:flex;align-items:center;gap:10px">
+            <label style="margin:0"><input type="checkbox" data-field="third_enabled"> Afecta a terceras fuerzas políticas</label>
+          </div>
         </div>
-        <div class="col" data-role-ui="rival-supports">
-          <div class="small muted" style="margin-top:0.5rem;">− Apoyos del rival</div>
-          <div class="chips" data-field="chips-rem-rival"></div>
-          <button class="btn" data-act="pick-rem-rival">Seleccionar</button>
+
+        <div class="row" data-role-ui="third-section" style="margin-top:8px">
+          <div class="col">
+            <label class="small">Identificar por</label>
+            <div class="target-radios" data-field="third-kind">
+              <label class="pill"><input type="radio" name="third-${uid}-${oid}" value="${THIRD_SELECTOR_KINDS.FORCE}"> Por fuerza</label>
+              <label class="pill"><input type="radio" name="third-${uid}-${oid}" value="${THIRD_SELECTOR_KINDS.AGENDA}"> Por agenda</label>
+              <label class="pill"><input type="radio" name="third-${uid}-${oid}" value="${THIRD_SELECTOR_KINDS.OFFICIALISM}"> Por rol oficialista</label>
+              <label class="pill"><input type="radio" name="third-${uid}-${oid}" value="${THIRD_SELECTOR_KINDS.SECTOR_SUPPORT}"> Por apoyo sectorial</label>
+            </div>
+            <div class="chips" data-field="target-third-chip" style="margin-top:8px"></div>
+            <button class="btn" data-act="pick-third" style="margin-top:8px" disabled>Seleccionar</button>
+          </div>
+        </div>
+
+        <div class="row" data-role-ui="third-metrics">
+          <div class="col">
+            <label>Δ Imagen del tercero (%)</label>
+            <input type="number" data-field="t_dimg" value="0"/>
+          </div>
+          <div class="col">
+            <label>Δ Núcleo del tercero (K)</label>
+            <input type="number" data-field="t_dnuc" step="100" value="0"/>
+          </div>
+          <div class="col">
+            <div class="small muted" style="margin-top:0.5rem;">− Apoyos del tercero</div>
+            <div class="chips" data-field="chips-third-rem"></div>
+            <button class="btn" data-act="pick-third-rem">Seleccionar</button>
+          </div>
         </div>
       </div>
     `;
@@ -300,52 +360,56 @@ export function mountForm(container, { onChange } = {}) {
       dnuc: card.querySelector('[data-field="dnuc"]'),
       p_workers: card.querySelector('[data-field="p_workers"]'),
       p_capital: card.querySelector('[data-field="p_capital"]'),
-      r_dimg: card.querySelector('[data-field="r_dimg"]'),
-      r_dnuc: card.querySelector('[data-field="r_dnuc"]'),
       chipsAdd: card.querySelector('[data-field="chips-add"]'),
       chipsRem: card.querySelector('[data-field="chips-rem"]'),
-      chipsAddRival: card.querySelector('[data-field="chips-add-rival"]'),
-      chipsRemRival: card.querySelector('[data-field="chips-rem-rival"]'),
       btnPickAdd: card.querySelector('[data-act="pick-add"]'),
       btnPickRem: card.querySelector('[data-act="pick-rem"]'),
-      btnPickAddRival: card.querySelector('[data-act="pick-add-rival"]'),
-      btnPickRemRival: card.querySelector('[data-act="pick-rem-rival"]'),
-      targetRadios: Array.from(card.querySelectorAll(`[name="tgt-${uid}-${oid}"]`)),
-      btnPickTarget: card.querySelector('[data-act="pick-target"]'),
-      targetChip: card.querySelector('[data-field="target-chip"]'),
-      sectionPendulum: card.querySelector('[data-role-ui="pendulum"]'),
-      sectionRivalDeltas: card.querySelectorAll('[data-role-ui="rival-deltas"]'),
-      sectionRivalSupports: card.querySelectorAll('[data-role-ui="rival-supports"]'),
-      sectionSelectorTarget: card.querySelector('[data-role-ui="selector-target"]'),
-      sectionSelfDeltas: card.querySelectorAll('[data-role-ui="self-deltas"]')
+      thirdWrapper: card.querySelector('[data-role-ui="third-wrapper"]'),
+      thirdEnabled: card.querySelector('[data-field="third_enabled"]'),
+      thirdSection: card.querySelector('[data-role-ui="third-section"]'),
+      thirdKindRadios: Array.from(card.querySelectorAll(`input[name="third-${uid}-${oid}"]`)),
+      btnPickThird: card.querySelector('[data-act="pick-third"]'),
+      targetThirdChip: card.querySelector('[data-field="target-third-chip"]'),
+      thirdMetrics: card.querySelector('[data-role-ui="third-metrics"]'),
+      t_dimg: card.querySelector('[data-field="t_dimg"]'),
+      t_dnuc: card.querySelector('[data-field="t_dnuc"]'),
+      chipsThirdRem: card.querySelector('[data-field="chips-third-rem"]'),
+      btnPickThirdRem: card.querySelector('[data-act="pick-third-rem"]'),
+      sectionPendulum: card.querySelector('[data-role-ui="pendulum"]')
     };
 
     ui.label.value = opt.label || "";
     ui.tooltip.value = opt.tooltip || "";
     ui.nextq.value = opt.next_question_id || "";
 
-    const inferNonSelfFromEffects = () => {
-      const e = Array.isArray(opt.effects) ? opt.effects.find(x => (x.target ?? EFFECT_TARGET.SELF) !== EFFECT_TARGET.SELF) : null;
-      return e ? e.target : EFFECT_TARGET.OFFICIALISM;
+    ui.dimg.value = getEffectValueSelf(opt.effects, "delta_public_image_pct", "value", 0);
+    ui.dnuc.value = getEffectValueSelf(opt.effects, "delta_nucleo", "value", 0);
+    ui.p_workers.value = getEffectValueSelf(opt.effects, "shift_pendulum", "workers", 0);
+    ui.p_capital.value = getEffectValueSelf(opt.effects, "shift_pendulum", "capital", 0);
+
+    let addIds = Array.isArray(opt.effects) ? (opt.effects.find(e => e && e.type === "add_supports")?.ids || []) : [];
+    addIds = Array.isArray(addIds) ? [...addIds] : [];
+    let remIds = Array.isArray(opt.effects) ? (opt.effects.find(e => e && e.type === "remove_supports")?.ids || []) : [];
+    remIds = Array.isArray(remIds) ? [...remIds] : [];
+
+    const inferThirdSel = () => {
+      if (opt._third_kind) return { kind: opt._third_kind, value: opt._third_value };
+      const s = findThirdSelectorInEffects(opt.effects);
+      if (!s) return null;
+      return { kind: s.kind, value: s.value };
     };
-    let targetSel = opt._ui_target || inferNonSelfFromEffects();
-    let targetId = opt._ui_target_id || (() => {
-      const e = Array.isArray(opt.effects) ? opt.effects.find(x => (x.target ?? EFFECT_TARGET.SELF) !== EFFECT_TARGET.SELF && x.target_id) : null;
-      return e?.target_id || "";
+    let thirdSel = inferThirdSel();
+    let thirdEnabled = !!opt._third_enabled || !!thirdSel || getThirdLostSupportsFromEffects(opt.effects).length > 0 || (() => {
+      const d = getThirdDeltasFromEffects(opt.effects);
+      return d.dimg !== 0 || d.dnuc !== 0;
     })();
+    if (!thirdSel) thirdSel = { kind: THIRD_SELECTOR_KINDS.OFFICIALISM, value: true };
+    thirdSel = normalizeThirdSelOnKind(thirdSel);
 
-    ui.dimg.value = getEffectValue(opt.effects, "delta_public_image_pct", "value", 0, EFFECT_TARGET.SELF);
-    ui.dnuc.value = getEffectValue(opt.effects, "delta_nucleo", "value", 0, EFFECT_TARGET.SELF);
-    ui.p_workers.value = getEffectValue(opt.effects, "shift_pendulum", "workers", 0, EFFECT_TARGET.SELF);
-    ui.p_capital.value = getEffectValue(opt.effects, "shift_pendulum", "capital", 0, EFFECT_TARGET.SELF);
-
-    ui.r_dimg.value = getEffectValue(opt.effects, "delta_public_image_pct", "value", 0, targetSel);
-    ui.r_dnuc.value = getEffectValue(opt.effects, "delta_nucleo", "value", 0, targetSel);
-
-    let addIds = getEffectIds(opt.effects, "add_supports", EFFECT_TARGET.SELF);
-    let remIds = getEffectIds(opt.effects, "remove_supports", EFFECT_TARGET.SELF);
-    let addIdsRival = getEffectIds(opt.effects, "add_supports", targetSel);
-    let remIdsRival = getEffectIds(opt.effects, "remove_supports", targetSel);
+    const thirdDeltas = getThirdDeltasFromEffects(opt.effects);
+    ui.t_dimg.value = thirdDeltas.dimg;
+    ui.t_dnuc.value = thirdDeltas.dnuc;
+    let thirdRemIds = getThirdLostSupportsFromEffects(opt.effects);
 
     function renderChips(host, ids) {
       host.innerHTML = "";
@@ -357,8 +421,8 @@ export function mountForm(container, { onChange } = {}) {
         chip.querySelector(".x").addEventListener("click", () => {
           const arr = host === ui.chipsAdd ? addIds
             : host === ui.chipsRem ? remIds
-            : host === ui.chipsAddRival ? addIdsRival
-            : remIdsRival;
+            : host === ui.chipsThirdRem ? thirdRemIds
+            : [];
           const idx = arr.indexOf(id);
           if (idx >= 0) arr.splice(idx, 1);
           renderChips(host, arr);
@@ -368,61 +432,106 @@ export function mountForm(container, { onChange } = {}) {
       });
     }
 
-    function renderTargetChip() {
-      ui.targetChip.innerHTML = "";
-      if (targetSel === EFFECT_TARGET.BY_SECTOR || targetSel === EFFECT_TARGET.BY_AGENDA) {
-        if (targetId) {
-          const isAgenda = targetSel === EFFECT_TARGET.BY_AGENDA;
-          const src = isAgenda ? agendaIconPathFor(targetId) : iconPathFor(targetId);
+    function setThirdKindRadio(val) {
+      const r = ui.thirdKindRadios.find(x => x.value === val);
+      if (r) r.checked = true;
+    }
+
+    function renderTargetThirdChip() {
+      ui.targetThirdChip.innerHTML = "";
+      if (!thirdSel) return;
+      const doRender = () => {
+        if (thirdSel.kind === THIRD_SELECTOR_KINDS.OFFICIALISM) {
           const chip = document.createElement("span");
           chip.className = "chip";
-          chip.innerHTML = `${src ? `<img src="${src}" alt="">` : ""}<span>${targetId}</span><button class="x" title="Quitar">×</button>`;
+          chip.innerHTML = `<span>Oficialismo</span>`;
+          ui.targetThirdChip.appendChild(chip);
+        } else if (thirdSel.kind === THIRD_SELECTOR_KINDS.FORCE) {
+          const idx = Number.isInteger(thirdSel.value) ? thirdSel.value : -1;
+          const src = forceIconPathFor(idx);
+          const label = idx >= 0 && idx < FORCE_SLUGS.length ? FORCE_SLUGS[idx] : "Fuerza";
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.innerHTML = `${src ? `<img src="${src}" alt="">` : ""}<span>${label}</span><button class="x" title="Quitar">×</button>`;
           chip.querySelector(".x").addEventListener("click", () => {
-            targetId = "";
-            opt._ui_target_id = "";
-            renderTargetChip();
+            thirdSel.value = null;
+            renderTargetThirdChip();
+            syncThirdPickAvailability();
             changed();
           });
-          ui.targetChip.appendChild(chip);
-        }
+          ui.targetThirdChip.appendChild(chip);
+        } else if (thirdSel.kind === THIRD_SELECTOR_KINDS.AGENDA) {
+          const id = String(thirdSel.value || "");
+          const src = agendaIconPathFor(id);
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.innerHTML = `${src ? `<img src="${src}" alt="">` : ""}<span>${id || "Agenda"}</span><button class="x" title="Quitar">×</button>`;
+          chip.querySelector(".x").addEventListener("click", () => {
+            thirdSel.value = "";
+            renderTargetThirdChip();
+            syncThirdPickAvailability();
+            changed();
+          });
+          ui.targetThirdChip.appendChild(chip);
+          } else if (thirdSel.kind === THIRD_SELECTOR_KINDS.SECTOR_SUPPORT) {
+            const id = String(thirdSel.value || "");
+            const src = iconPathFor(id);
+            const chip = document.createElement("span");
+            chip.className = "chip";
+            chip.innerHTML = `${src ? `<img src="${src}" alt="">` : ""}<span>${id || "Sector"}</span><button class="x" title="Quitar">×</button>`;
+            chip.querySelector(".x").addEventListener("click", () => {
+              thirdSel.value = "";
+              renderTargetThirdChip();
+              syncThirdPickAvailability();
+              changed();
+            });
+            ui.targetThirdChip.appendChild(chip);
+          }
+      };
+      if (thirdSel.kind === THIRD_SELECTOR_KINDS.SECTOR_SUPPORT && !_iconMapCache) {
+        loadIconMap().then(doRender);
+      } else {
+        doRender();
       }
+    }
+
+    function syncThirdVisibility() {
+      ui.thirdSection.style.display = thirdEnabled ? "" : "none";
+      ui.thirdMetrics.style.display = thirdEnabled ? "" : "none";
+      ui.thirdEnabled.checked = thirdEnabled;
+    }
+
+    function needPickForThird() {
+      return thirdSel && (thirdSel.kind === THIRD_SELECTOR_KINDS.FORCE || thirdSel.kind === THIRD_SELECTOR_KINDS.AGENDA || thirdSel.kind === THIRD_SELECTOR_KINDS.SECTOR_SUPPORT);
+    }
+
+    function syncThirdPickAvailability() {
+      ui.btnPickThird.disabled = !thirdEnabled || !needPickForThird();
     }
 
     function getCurrentRole() {
       return Number(root.querySelector(`input[name="role-${uid}"]:checked`)?.value || ROLES.OFICIALISMO);
     }
 
-    function syncTargetUIAvailability() {
+    function updatePendulumAvailability() {
       const roleOpp = getCurrentRole() === ROLES.OPOSICION;
-      ui.sectionSelectorTarget.style.display = roleOpp ? "" : "none";
       ui.sectionPendulum.style.display = roleOpp ? "none" : "";
-      ui.sectionRivalDeltas.forEach(n => n.style.display = roleOpp ? "" : "none");
-      ui.sectionRivalSupports.forEach(n => n.style.display = roleOpp ? "" : "none");
-      ui.sectionSelfDeltas.forEach(n => n.style.display = "");
-      const needPick = targetSel === EFFECT_TARGET.BY_SECTOR || targetSel === EFFECT_TARGET.BY_AGENDA;
-      ui.btnPickTarget.disabled = !roleOpp || !needPick;
     }
 
-    function setTargetRadiosValue(val) {
-      const r = ui.targetRadios.find(x => x.value === val);
-      if (r) r.checked = true;
-    }
-
-    setTargetRadiosValue(targetSel);
+    setThirdKindRadio(thirdSel.kind);
     renderChips(ui.chipsAdd, addIds);
     renderChips(ui.chipsRem, remIds);
-    renderChips(ui.chipsAddRival, addIdsRival);
-    renderChips(ui.chipsRemRival, remIdsRival);
-    renderTargetChip();
-    syncTargetUIAvailability();
+    renderChips(ui.chipsThirdRem, thirdRemIds);
+    renderTargetThirdChip();
+    syncThirdVisibility();
+    syncThirdPickAvailability();
+    updatePendulumAvailability();
 
-    ui.label.addEventListener("input", () => { changed(); });
-    ui.tooltip.addEventListener("input", () => { changed(); });
-    ui.nextq.addEventListener("input", () => { changed(); });
+    ui.label.addEventListener("input", () => changed());
+    ui.tooltip.addEventListener("input", () => changed());
+    ui.nextq.addEventListener("input", () => changed());
     ui.dimg.addEventListener("input", () => changed());
     ui.dnuc.addEventListener("input", () => changed());
-    ui.r_dimg.addEventListener("input", () => changed());
-    ui.r_dnuc.addEventListener("input", () => changed());
 
     let syncingPendulum = false;
     function mirrorPendulum(from) {
@@ -432,11 +541,8 @@ export function mountForm(container, { onChange } = {}) {
       let c = parseInt(ui.p_capital.value, 10);
       if (!Number.isFinite(w)) w = 0;
       if (!Number.isFinite(c)) c = 0;
-      if (from === "workers") {
-        ui.p_capital.value = String(-w);
-      } else if (from === "capital") {
-        ui.p_workers.value = String(-c);
-      }
+      if (from === "workers") ui.p_capital.value = String(-w);
+      else if (from === "capital") ui.p_workers.value = String(-c);
       syncingPendulum = false;
       changed();
     }
@@ -457,48 +563,51 @@ export function mountForm(container, { onChange } = {}) {
       renderChips(ui.chipsRem, remIds);
       changed();
     });
-    ui.btnPickAddRival.addEventListener("click", async () => {
-      await loadIconMap();
-      const picked = await openSectorPicker({ preselectedIds: addIdsRival });
-      addIdsRival = Array.isArray(picked) ? picked : [];
-      renderChips(ui.chipsAddRival, addIdsRival);
-      changed();
-    });
-    ui.btnPickRemRival.addEventListener("click", async () => {
-      await loadIconMap();
-      const picked = await openSectorPicker({ preselectedIds: remIdsRival });
-      remIdsRival = Array.isArray(picked) ? picked : [];
-      renderChips(ui.chipsRemRival, remIdsRival);
+
+    ui.thirdEnabled.addEventListener("change", () => {
+      thirdEnabled = !!ui.thirdEnabled.checked;
+      syncThirdVisibility();
+      syncThirdPickAvailability();
       changed();
     });
 
-    ui.targetRadios.forEach(r => {
+    ui.thirdKindRadios.forEach(r => {
       r.addEventListener("change", () => {
-        targetSel = r.value;
-        opt._ui_target = targetSel;
-        if (targetSel !== EFFECT_TARGET.BY_SECTOR && targetSel !== EFFECT_TARGET.BY_AGENDA) {
-          targetId = "";
-          opt._ui_target_id = "";
-          renderTargetChip();
-        }
-        syncTargetUIAvailability();
+        thirdSel = normalizeThirdSelOnKind({ kind: r.value, value: null });
+        renderTargetThirdChip();
+        syncThirdPickAvailability();
         changed();
       });
     });
 
-    ui.btnPickTarget.addEventListener("click", async () => {
-      if (targetSel === EFFECT_TARGET.BY_SECTOR) {
-        await loadIconMap();
-        const picked = await openSectorPicker({ preselectedIds: targetId ? [targetId] : [] });
-        targetId = Array.isArray(picked) && picked[0] ? picked[0] : "";
-        opt._ui_target_id = targetId;
-      } else if (targetSel === EFFECT_TARGET.BY_AGENDA) {
+    ui.btnPickThird.addEventListener("click", async () => {
+      if (!thirdEnabled) return;
+      if (thirdSel.kind === THIRD_SELECTOR_KINDS.FORCE) {
+        const picked = await openForcePicker({ preselectedIndex: Number.isInteger(thirdSel.value) ? thirdSel.value : null });
+        if (typeof picked === "number") thirdSel.value = picked;
+        else if (picked && typeof picked.index === "number") thirdSel.value = picked.index;
+      } else if (thirdSel.kind === THIRD_SELECTOR_KINDS.AGENDA) {
         await loadAgendaMap();
-        const picked = await openAgendaPicker({ preselectedIds: targetId ? [targetId] : [] });
-        targetId = Array.isArray(picked) && picked[0] ? picked[0] : "";
-        opt._ui_target_id = targetId;
+        const picked = await openAgendaPicker({ preselectedIds: thirdSel.value ? [thirdSel.value] : [] });
+        thirdSel.value = Array.isArray(picked) && picked[0] ? picked[0] : "";
+      } else if (thirdSel.kind === THIRD_SELECTOR_KINDS.SECTOR_SUPPORT) {
+        await loadIconMap();
+        const picked = await openSectorPicker({ preselectedIds: thirdSel.value ? [thirdSel.value] : [] });
+        thirdSel.value = Array.isArray(picked) && picked[0] ? picked[0] : "";
       }
-      renderTargetChip();
+      renderTargetThirdChip();
+      syncThirdPickAvailability();
+      changed();
+    });
+
+    ui.t_dimg.addEventListener("input", () => changed());
+    ui.t_dnuc.addEventListener("input", () => changed());
+
+    ui.btnPickThirdRem.addEventListener("click", async () => {
+      await loadIconMap();
+      const picked = await openSectorPicker({ preselectedIds: thirdRemIds });
+      thirdRemIds = Array.isArray(picked) ? picked : [];
+      renderChips(ui.chipsThirdRem, thirdRemIds);
       changed();
     });
 
@@ -508,28 +617,36 @@ export function mountForm(container, { onChange } = {}) {
       const vNuc = Number(ui.dnuc.value || 0);
       const vW = Number(ui.p_workers.value || 0);
       const vC = Number(ui.p_capital.value || 0);
-      if (Number.isInteger(vImg) && vImg !== 0) effects.push({ type: "delta_public_image_pct", value: vImg, target: EFFECT_TARGET.SELF });
-      if (Number.isInteger(vNuc) && vNuc !== 0) effects.push({ type: "delta_nucleo", value: vNuc, target: EFFECT_TARGET.SELF });
-      if (Number.isInteger(vW) && Number.isInteger(vC) && (vW !== 0 || vC !== 0)) {
-        effects.push({ type: "shift_pendulum", workers: vW, capital: vC, target: EFFECT_TARGET.SELF });
-      }
-      if (Array.isArray(addIds) && addIds.length) effects.push({ type: "add_supports", ids: [...addIds], target: EFFECT_TARGET.SELF });
-      if (Array.isArray(remIds) && remIds.length) effects.push({ type: "remove_supports", ids: [...remIds], target: EFFECT_TARGET.SELF });
-
+      if (Number.isInteger(vImg) && vImg !== 0) effects.push({ type: "delta_public_image_pct", value: vImg });
+      if (Number.isInteger(vNuc) && vNuc !== 0) effects.push({ type: "delta_nucleo", value: vNuc });
       const roleOpp = getCurrentRole() === ROLES.OPOSICION;
-      if (roleOpp) {
-        const rImg = Number(ui.r_dimg.value || 0);
-        const rNuc = Number(ui.r_dnuc.value || 0);
-        const t = targetSel || EFFECT_TARGET.OFFICIALISM;
-        const payloadBase = {};
-        if (t !== EFFECT_TARGET.SELF) payloadBase.target = t;
-        if ((t === EFFECT_TARGET.BY_SECTOR || t === EFFECT_TARGET.BY_AGENDA) && targetId) {
-          payloadBase.target_id = targetId;
+      if (!roleOpp && Number.isInteger(vW) && Number.isInteger(vC) && (vW !== 0 || vC !== 0)) {
+        effects.push({ type: "shift_pendulum", workers: vW, capital: vC });
+      }
+      if (Array.isArray(addIds) && addIds.length) effects.push({ type: "add_supports", ids: [...addIds] });
+      if (Array.isArray(remIds) && remIds.length) effects.push({ type: "remove_supports", ids: [...remIds] });
+
+      if (thirdEnabled && thirdSel) {
+        const tImg = Number(ui.t_dimg.value || 0);
+        const tNuc = Number(ui.t_dnuc.value || 0);
+        const base = {};
+        if (thirdSel.kind === THIRD_SELECTOR_KINDS.FORCE && Number.isInteger(thirdSel.value)) base.force_id = thirdSel.value;
+        else if (thirdSel.kind === THIRD_SELECTOR_KINDS.AGENDA && typeof thirdSel.value === "string" && thirdSel.value.trim()) base.by_agenda = thirdSel.value.trim();
+        else if (thirdSel.kind === THIRD_SELECTOR_KINDS.OFFICIALISM) base.by_officialism = true;
+        else if (thirdSel.kind === THIRD_SELECTOR_KINDS.SECTOR_SUPPORT && typeof thirdSel.value === "string" && thirdSel.value.trim()) base.by_sector_support = thirdSel.value.trim();
+
+        if (Object.keys(base).length > 0) {
+          if ((Number.isInteger(tImg) && tImg !== 0) || (Number.isInteger(tNuc) && tNuc !== 0)) {
+            effects.push({ type: "affect_force_stats", imagen_delta: Number.isInteger(tImg) ? tImg : 0, nucleo_delta: Number.isInteger(tNuc) ? tNuc : 0, ...base });
+          }
+          if (Array.isArray(thirdRemIds) && thirdRemIds.length) {
+            thirdRemIds.forEach(id => {
+              if (typeof id === "string" && id.trim()) {
+                effects.push({ type: "force_support_loss", support_id: id.trim(), ...base });
+              }
+            });
+          }
         }
-        if (Number.isInteger(rImg) && rImg !== 0) effects.push({ type: "delta_public_image_pct", value: rImg, ...payloadBase });
-        if (Number.isInteger(rNuc) && rNuc !== 0) effects.push({ type: "delta_nucleo", value: rNuc, ...payloadBase });
-        if (Array.isArray(addIdsRival) && addIdsRival.length) effects.push({ type: "add_supports", ids: [...addIdsRival], ...payloadBase });
-        if (Array.isArray(remIdsRival) && remIdsRival.length) effects.push({ type: "remove_supports", ids: [...remIdsRival], ...payloadBase });
       }
 
       return effects;
@@ -547,18 +664,13 @@ export function mountForm(container, { onChange } = {}) {
           next_question_id: ui.nextq.value || "",
           effects: collectEffects()
         };
-        out._ui_target = targetSel || "";
-        out._ui_target_id = targetId || "";
+        out._third_enabled = !!thirdEnabled;
+        out._third_kind = thirdSel?.kind || "";
+        out._third_value = thirdSel?.value ?? null;
         return out;
       },
-      updateRoleUI: (roleVal) => {
-        const roleOpp = roleVal === ROLES.OPOSICION;
-        ui.sectionSelectorTarget.style.display = roleOpp ? "" : "none";
-        ui.sectionPendulum.style.display = roleOpp ? "none" : "";
-        ui.sectionRivalDeltas.forEach(n => n.style.display = roleOpp ? "" : "none");
-        ui.sectionRivalSupports.forEach(n => n.style.display = roleOpp ? "" : "none");
-        const needPick = targetSel === EFFECT_TARGET.BY_SECTOR || targetSel === EFFECT_TARGET.BY_AGENDA;
-        ui.btnPickTarget.disabled = !roleOpp || !needPick;
+      updateRoleUI: () => {
+        updatePendulumAvailability();
       }
     };
   }
@@ -579,9 +691,8 @@ export function mountForm(container, { onChange } = {}) {
   }
 
   function updateRoleDrivenUI() {
-    const roleVal = Number(root.querySelector(`input[name="role-${uid}"]:checked`)?.value || ROLES.OFICIALISMO);
     if (Array.isArray(ref.optionsHost._collectors)) {
-      ref.optionsHost._collectors.forEach(c => c.updateRoleUI?.(roleVal));
+      ref.optionsHost._collectors.forEach(c => c.updateRoleUI?.());
     }
   }
 

@@ -1,0 +1,107 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Layout general */
+
+body {
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+#list-root,
+#form-root {
+  width: 100%;
+  min-width: 0;
+}
+
+#form-root {
+  margin-top: 8px;
+}
+
+/* Header lista y botones */
+
+header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+header .actions {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+header .actions button {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Lista */
+
+ul.list {
+  max-height: none;
+}
+
+/* Formulario */
+
+.form .row {
+  flex-direction: column;
+}
+
+.form .col {
+  width: 100%;
+}
+
+/* Agendas */
+
+.agenda-box {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.agenda-box .chips {
+  margin: 0 0 6px 0 !important;
+}
+
+/* Opciones de respuesta */
+
+.form .option {
+  padding: 10px;
+}
+
+.form .option .row {
+  flex-direction: column;
+}
+
+/* Modales */
+
+.modal-backdrop {
+  padding: 0;
+}
+
+.modal {
+  width: 100vw;
+  max-height: 100vh;
+  border-radius: 0;
+}
+
+.icon-grid {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+/* Tipografía ligeramente más compacta en mobile */
+
+.form label {
+  font-size: 0.9rem;
+}
+
+.small {
+  font-size: 0.9rem;
+}

@@ -1,4 +1,4 @@
-import { SCOPES, PROVINCES, ROLES, EFFECT_TYPES, EFFECT_TARGET, isValidEffectTarget, targetNeedsId, isProvincial, ensureOptionIds } from "./schema.js";
+import { SCOPES, PROVINCES, ROLES, EFFECT_TYPES, isProvincial, ensureOptionIds, readThirdSelectorFrom } from "./schema.js";
 
 export function validateQuestion(q) {
   const problems = [];
@@ -72,12 +72,6 @@ function validateEffect(e, roleTarget) {
   if (!e || typeof e !== "object") return ["efecto inválido"];
   if (!EFFECT_TYPES.includes(e.type)) return ["tipo de efecto inválido"];
 
-  const t = e.target ?? EFFECT_TARGET.SELF;
-  if (!isValidEffectTarget(t)) problems.push("target inválido");
-  if (targetNeedsId(t)) {
-    if (!isNonEmptyString(e.target_id)) problems.push("target_id requerido para target seleccionado");
-  }
-
   switch (e.type) {
     case "delta_public_image_pct":
     case "delta_nucleo":
@@ -93,6 +87,23 @@ function validateEffect(e, roleTarget) {
       if (!Array.isArray(e.ids)) problems.push("ids debe ser array");
       else if (!e.ids.every(isNonEmptyString)) problems.push("ids debe contener strings no vacíos");
       break;
+    case "affect_force_stats": {
+      const dimg = Number(e.imagen_delta);
+      const dnuc = Number(e.nucleo_delta);
+      const oneIsInt = Number.isInteger(dimg) || Number.isInteger(dnuc);
+      if (!Number.isInteger(dimg)) problems.push("imagen_delta debe ser entero");
+      if (!Number.isInteger(dnuc)) problems.push("nucleo_delta debe ser entero");
+      if (oneIsInt && dimg === 0 && dnuc === 0) problems.push("al menos uno de imagen_delta o nucleo_delta debe ser distinto de 0");
+      const sel = readThirdSelectorFrom(e);
+      if (!sel) problems.push("selector de tercero inválido (usar uno de force_id | by_agenda | by_officialism | by_sector_support)");
+      break;
+    }
+    case "force_support_loss": {
+      if (!isNonEmptyString(e.support_id)) problems.push("support_id requerido");
+      const sel = readThirdSelectorFrom(e);
+      if (!sel) problems.push("selector de tercero inválido (usar uno de force_id | by_agenda | by_officialism | by_sector_support)");
+      break;
+    }
     default:
       break;
   }

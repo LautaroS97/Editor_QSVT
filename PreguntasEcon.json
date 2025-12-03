@@ -1,6 +1,4 @@
-# Auto-generado por Editor de Preguntas
-# Guardar este archivo dentro de data/
-var Preguntas = [
+[
   {
     "id": "proyecto_carem",
     "name": "Proyecto Carem",

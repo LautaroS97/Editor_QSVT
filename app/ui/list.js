@@ -22,6 +22,27 @@ export function mountList(container, { onSelect, onNew, onDelete, onDuplicate, o
 
   if (btnNew) btnNew.addEventListener("click", () => onNew && onNew());
 
+  function thirdPartyStats(q) {
+    let byForce = 0, byAgenda = 0, byOfficialism = 0, bySector = 0;
+    const opts = Array.isArray(q?.options) ? q.options : [];
+    for (const o of opts) {
+      const effs = Array.isArray(o?.effects) ? o.effects : [];
+      for (const e of effs) {
+        const t = String(e?.type || "");
+        if (t !== "affect_force_stats" && t !== "force_support_loss") continue;
+        if (Number.isInteger(e?.force_id) && e.force_id >= 0) byForce++;
+        else if (typeof e?.by_agenda === "string" && e.by_agenda) byAgenda++;
+        else if (e?.by_officialism === true) byOfficialism++;
+        else if (typeof e?.by_sector_support === "string" && e.by_sector_support) bySector++;
+      }
+    }
+    const total = byForce + byAgenda + byOfficialism + bySector;
+    return {
+      has: total > 0,
+      title: `Por fuerza: ${byForce} · Por agenda: ${byAgenda} · Por rol oficialista: ${byOfficialism} · Por apoyo sectorial: ${bySector}`
+    };
+  }
+
   function renderItem(q, i, active) {
     const li = document.createElement("li");
     li.className = active ? "active" : "";
@@ -36,8 +57,8 @@ export function mountList(container, { onSelect, onNew, onDelete, onDuplicate, o
     const roleLabel = ROLES_LABEL[role] || "";
     const catLabel = CATEGORY_LABEL[cat] || cat;
     const scopeLabel = q?.scope ? (SCOPE_LABEL[q.scope] || q.scope) : "";
-    const provinceLabel =
-      q?.scope === "provincial" && q.province ? (PROVINCE_LABEL[q.province] || q.province) : "";
+    const provinceLabel = q?.scope === "provincial" && q.province ? (PROVINCE_LABEL[q.province] || q.province) : "";
+    const third = thirdPartyStats(q);
 
     li.innerHTML = `
       <div class="left" style="display:flex;flex-direction:column;gap:2px">
@@ -51,6 +72,7 @@ export function mountList(container, { onSelect, onNew, onDelete, onDuplicate, o
           ${cat ? `<span class="pill">${escapeHtml(catLabel)}</span>` : ""}
           ${q.scope ? `<span class="pill">${escapeHtml(scopeLabel)}</span>` : ""}
           ${provinceLabel ? `<span class="pill">${escapeHtml(provinceLabel)}</span>` : ""}
+          ${third.has ? `<span class="pill" title="${escapeHtml(third.title)}">3ºs fuerzas</span>` : ""}
         </div>
       </div>
       <div class="actions">
